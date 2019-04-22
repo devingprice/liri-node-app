@@ -34,7 +34,9 @@ function concertThis(name) {
             // for (var concert in response.data) {
             var name = concert.venue.name;
             var location = concert.venue.city +', '+ concert.venue.country;
-            var date = concert.datetime;
+            var date = moment(concert.datetime, "YYYY-MM-DD")
+                .format('MM/DD/YYYY');
+
             console.log({
                 name, location, date
             })
@@ -62,6 +64,7 @@ function spotifyThisSong(name) {
         })
     });
 }
+
 function movieThis(name){
     if (!name || name.length < 1) {
         name = "Mr. Nobody"
