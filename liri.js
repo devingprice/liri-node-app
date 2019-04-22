@@ -1,27 +1,29 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
+var moment = require("moment")
 var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
+var fs = require("fs");
 
-var command = process.argv[2];
-var name = process.argv.splice(3, process.argv.length - 1).join(' ');
-console.log(name)
+function runLiri(command, name){
+    switch (command) {
+        case `concert-this`:
+            concertThis(name);
+            break;
 
-switch (command) {
-    case `concert-this`:
-        concertThis(name);
-        break;
+        case 'spotify-this-song':
+            spotifyThisSong(name);
+            break;
 
-    case 'spotify-this-song':
-        spotifyThisSong(name);
-        break;
+        case 'movie-this':
+            movieThis(name);
+            break;
 
-    case 'movie-this':
-        movieThis(name);
-        break;
-
-    case 'do-what-it-says':
-        break;
+        case 'do-what-it-says':
+            doWhatItSays();
+            break;
+    }
 }
 
 function concertThis(name) {
@@ -39,8 +41,8 @@ function concertThis(name) {
         })
     })
 }
+
 function spotifyThisSong(name) {
-    var spotify = new Spotify(keys.spotify);
     if( !name || name.length < 1 ){
         name = "The Sign by Ace of Base"
     }
@@ -81,3 +83,16 @@ function movieThis(name){
         })
     })
 }
+
+function doWhatItSays(){
+    fs.readFile('./random.txt', 'utf8', function(err, data){
+        console.log(data)
+        var [command, name] = data.split(',');
+        runLiri(command, name);
+    })
+}
+
+//default
+var command = process.argv[2];
+var name = process.argv.splice(3, process.argv.length - 1).join(' ');
+runLiri(command, name);
