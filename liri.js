@@ -24,6 +24,7 @@ function runLiri(command, name){
             doWhatItSays();
             break;
     }
+    logToFile(command, name)
 }
 
 function concertThis(name) {
@@ -93,6 +94,20 @@ function doWhatItSays(){
         var [command, name] = data.split(',');
         runLiri(command, name);
     })
+}
+
+function logToFile(command, name){
+    var dataString = command + ',"' + name + '" ';
+    fs.writeFile('./log.txt', dataString , { flag: 'wx' }, function (err) {
+        if (err) {
+            console.log( err );
+            fs.appendFile('./log.txt', dataString, function (err) {
+                if (err) throw err;
+                console.log('Appended file');
+            });
+        };
+        console.log("Made file");
+    });
 }
 
 //default
