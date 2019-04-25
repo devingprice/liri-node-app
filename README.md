@@ -31,6 +31,8 @@ node liri movie-this <movie name>
 node liri do-what-it-says
 ```
 
+<p align="center"><img src="https://github.com/devingprice/liri-node-app/blob/master/images/demo.gif"></p>
+
 ### Responses : 
 
 | Command       | Response         |
